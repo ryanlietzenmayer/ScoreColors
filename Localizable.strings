@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  UIColorConverter
+
+  Created by Ryan Lietzenmayer on 8/30/17.
+  Copyright © 2017 Ryan Lietzenmayer. All rights reserved.
+*/
+
+"Welcome" = "Welcome";
+"Thank you!" = "Thank you!";
