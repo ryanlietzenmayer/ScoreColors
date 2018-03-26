@@ -56,6 +56,18 @@ class SoloScoreColor: UIViewController {
     @IBOutlet weak var lowPointLabel: UILabel!
     @IBOutlet weak var minPointLabel: UILabel!
     
+    @IBOutlet weak var demoView0: UIView!
+    @IBOutlet weak var demoView10: UIView!
+    @IBOutlet weak var demoView20: UIView!
+    @IBOutlet weak var demoView30: UIView!
+    @IBOutlet weak var demoView40: UIView!
+    @IBOutlet weak var demoView50: UIView!
+    @IBOutlet weak var demoView60: UIView!
+    @IBOutlet weak var demoView70: UIView!
+    @IBOutlet weak var demoView80: UIView!
+    @IBOutlet weak var demoView90: UIView!
+    @IBOutlet weak var demoView100: UIView!
+
     let maxScore = 99.0
     let minScore = 0.0
     
@@ -314,6 +326,20 @@ class SoloScoreColor: UIViewController {
         return percentScore
     }
     
+    func setBackgroundDemoColors() {
+        demoView0.backgroundColor = colorFromScore(soloScoreFromPercent(0.0))
+        demoView10.backgroundColor = colorFromScore(soloScoreFromPercent(10.0))
+        demoView20.backgroundColor = colorFromScore(soloScoreFromPercent(20.0))
+        demoView30.backgroundColor = colorFromScore(soloScoreFromPercent(30.0))
+        demoView40.backgroundColor = colorFromScore(soloScoreFromPercent(40.0))
+        demoView50.backgroundColor = colorFromScore(soloScoreFromPercent(50.0))
+        demoView60.backgroundColor = colorFromScore(soloScoreFromPercent(60.0))
+        demoView70.backgroundColor = colorFromScore(soloScoreFromPercent(70.0))
+        demoView80.backgroundColor = colorFromScore(soloScoreFromPercent(80.0))
+        demoView90.backgroundColor = colorFromScore(soloScoreFromPercent(90.0))
+        demoView100.backgroundColor = colorFromScore(soloScoreFromPercent(100.0))
+    }
+    
     func setColor() {
         let maxColorVals = hexStringFromUIColor(color: maxTierPointScoreColor)
         rMaxTierTextField.text = maxColorVals[0]
@@ -341,6 +367,8 @@ class SoloScoreColor: UIViewController {
         midPointLabel.backgroundColor = middleTierPointScoreColor
         lowPointLabel.backgroundColor = lowTierPointScoreColor
         minPointLabel.backgroundColor = minTierPointScoreColor
+        
+        setBackgroundDemoColors()
         
         let percentScore = slider.value
         var score = Double(percentScore)
@@ -545,15 +573,9 @@ class SoloScoreColor: UIViewController {
         let r = components![0]
         let g = components![1]
         let b = components![2]
-//        r = r*255
-//        g = g/255.0
-//        b = b
-        let hexString = [String(format:"%02X",Int(r * 0xff)), String(format:"%02X",Int(g * 0xff)), String(format:"%02X",Int(b * 0xff))]
-//            format: "%02X %02X %02X",
-//            Int(r * 0xff),
-//            Int(g * 0xff),
-//            Int(b * 0xff)
-//        )
+        let hexString = [String(format:"%02X",Int(r * 0xff)),
+                         String(format:"%02X",Int(g * 0xff)),
+                         String(format:"%02X",Int(b * 0xff))]
         return hexString
     }
     
