@@ -26,19 +26,42 @@ class SoloScoreColor: UIViewController {
     @IBOutlet weak var middleTierPercentTextField: UITextField!
     @IBOutlet weak var lowTierPercentTextField: UITextField!
     
-    @IBOutlet weak var highTierHexTextField: UITextField!
-    @IBOutlet weak var middleTierHexTextField: UITextField!
-    @IBOutlet weak var lowTierHexTextField: UITextField!
+    @IBOutlet weak var rMaxTierTextField: UITextField!
+    @IBOutlet weak var gMaxTierTextField: UITextField!
+    @IBOutlet weak var bMaxTierTextField: UITextField!
+
+    @IBOutlet weak var rHighTierTextField: UITextField!
+    @IBOutlet weak var gHighTierTextField: UITextField!
+    @IBOutlet weak var bHighTierTextField: UITextField!
     
+    @IBOutlet weak var rMidTierTextField: UITextField!
+    @IBOutlet weak var gMidTierTextField: UITextField!
+    @IBOutlet weak var bMidTierTextField: UITextField!
+    
+    @IBOutlet weak var rLowTierTextField: UITextField!
+    @IBOutlet weak var gLowTierTextField: UITextField!
+    @IBOutlet weak var bLowTierTextField: UITextField!
+    
+    @IBOutlet weak var rMinTierTextField: UITextField!
+    @IBOutlet weak var gMinTierTextField: UITextField!
+    @IBOutlet weak var bMinTierTextField: UITextField!
+
     @IBOutlet weak var highTierScoreLabel: UILabel!
     @IBOutlet weak var middleTierScoreLabel: UILabel!
     @IBOutlet weak var lowTierScoreLabel: UILabel!
-
+    
+    @IBOutlet weak var maxPointLabel: UILabel!
+    @IBOutlet weak var highPointLabel: UILabel!
+    @IBOutlet weak var midPointLabel: UILabel!
+    @IBOutlet weak var lowPointLabel: UILabel!
+    @IBOutlet weak var minPointLabel: UILabel!
+    
     let maxScore = 99.0
-    let minScore = 45.0
-    var highTierPoint = 0.75
-    var middleTierPoint = 0.50
-    var lowTierPoint = 0.25
+    let minScore = 0.0
+    
+    var highTierPoint = 0.8550
+    var middleTierPoint = 0.8550
+    var lowTierPoint = 0.45
     
     //  Lightning Yellow; #FCBE24, rgb(252,190,36)
     private static let yellowLightning: UIColor = UIColor(rgb:0xFCBE24)
@@ -54,18 +77,18 @@ class SoloScoreColor: UIViewController {
     static let goodColor: UIColor = turquoise
     static let midColor: UIColor = greenFern
     static let badColor: UIColor = yellowLightning
-
     
-    static let goodScoreColor: UIColor = blueKashmir
-    var highTierPointScoreColor: UIColor = turquoise
-    static let middleTierPointScoreColor: UIColor = greenFern
-    static let lowTierPointScoreColor: UIColor = yellowLightning
-    static let badScoreColor: UIColor = orangeBurnt
-
+    
+    var maxTierPointScoreColor: UIColor = turquoise
+    var highTierPointScoreColor: UIColor = greenFern
+    var middleTierPointScoreColor: UIColor = greenFern
+    var lowTierPointScoreColor: UIColor = yellowLightning
+    var minTierPointScoreColor: UIColor = orangeBurnt
+    
     override func viewDidLoad() {
         super .viewDidLoad()
         setColor()
-
+        
         scoreLabel.keyboardType = .numberPad
         let score = soloScoreFromPercent(Double(slider.value))
         scoreLabel.text = String(format:"%.2f", score)
@@ -100,22 +123,135 @@ class SoloScoreColor: UIViewController {
         }
     }
     
+    
+    @IBAction func maxHexEditingChanged(_ sender: Any) {
+        if let rStr = rMaxTierTextField.text,
+            let gStr = gMaxTierTextField.text,
+            let bStr = bMaxTierTextField.text {
+            
+            if var rHexNum = Int(rStr, radix:16),
+                var gHexNum = Int(gStr, radix:16),
+                var bHexNum = Int(bStr, radix:16) {
+                
+                if rHexNum>255{
+                    rHexNum = 255
+                }
+                if gHexNum>255{
+                    gHexNum = 255
+                }
+                if bHexNum>255{
+                    bHexNum = 255
+                }
+
+                let color: UIColor = UIColor(red:rHexNum, green:gHexNum, blue:bHexNum)
+                maxTierPointScoreColor = color
+            }
+        }
+        setColor()
+    }
+
     @IBAction func highHexEditingChanged(_ sender: Any) {
-//        if let str = highTierHexTextField.text {
-//            let data = str.data(using: .utf8)!
-//            let hexString = data.map{ String(format:"%02x", $0) }.joined()
-//            let color: UIColor = UIColor(rgb:Int(hexString)!)
-//            highTierPointScoreColor = color
-////        highTierHexTextField.text = ()
-//        }
+        if let rStr = rHighTierTextField.text,
+            let gStr = gHighTierTextField.text,
+            let bStr = bHighTierTextField.text {
+            
+            if var rHexNum = Int(rStr, radix:16),
+                var gHexNum = Int(gStr, radix:16),
+                var bHexNum = Int(bStr, radix:16) {
+                
+                if rHexNum>255{
+                    rHexNum = 255
+                }
+                if gHexNum>255{
+                    gHexNum = 255
+                }
+                if bHexNum>255{
+                    bHexNum = 255
+                }
+
+                let color: UIColor = UIColor(red:rHexNum, green:gHexNum, blue:bHexNum)
+                highTierPointScoreColor = color
+            }
+        }
         setColor()
     }
     @IBAction func midHexEditingChanged(_ sender: Any) {
+        if let rStr = rMidTierTextField.text,
+            let gStr = gMidTierTextField.text,
+            let bStr = bMidTierTextField.text {
+            
+            if var rHexNum = Int(rStr, radix:16),
+                var gHexNum = Int(gStr, radix:16),
+                var bHexNum = Int(bStr, radix:16) {
+                
+                if rHexNum>255{
+                    rHexNum = 255
+                }
+                if gHexNum>255{
+                    gHexNum = 255
+                }
+                if bHexNum>255{
+                    bHexNum = 255
+                }
+
+                let color: UIColor = UIColor(red:rHexNum, green:gHexNum, blue:bHexNum)
+                middleTierPointScoreColor = color
+            }
+        }
         setColor()
     }
     @IBAction func lowHexEditingChanged(_ sender: Any) {
+        if let rStr = rLowTierTextField.text,
+            let gStr = gLowTierTextField.text,
+            let bStr = bLowTierTextField.text {
+            
+            if var rHexNum = Int(rStr, radix:16),
+                var gHexNum = Int(gStr, radix:16),
+                var bHexNum = Int(bStr, radix:16) {
+                
+                if rHexNum>255{
+                    rHexNum = 255
+                }
+                if gHexNum>255{
+                    gHexNum = 255
+                }
+                if bHexNum>255{
+                    bHexNum = 255
+                }
+
+                let color: UIColor = UIColor(red:rHexNum, green:gHexNum, blue:bHexNum)
+                lowTierPointScoreColor = color
+            }
+        }
         setColor()
     }
+    @IBAction func minHexEditingChanged(_ sender: Any) {
+        if let rStr = rMinTierTextField.text,
+            let gStr = gMinTierTextField.text,
+            let bStr = bMinTierTextField.text {
+            
+            if var rHexNum = Int(rStr, radix:16),
+                var gHexNum = Int(gStr, radix:16),
+                var bHexNum = Int(bStr, radix:16) {
+                
+                if rHexNum>255{
+                    rHexNum = 255
+                }
+                if gHexNum>255{
+                    gHexNum = 255
+                }
+                if bHexNum>255{
+                    bHexNum = 255
+                }
+
+                let color: UIColor = UIColor(red:rHexNum, green:gHexNum, blue:bHexNum)
+                minTierPointScoreColor = color
+            }
+        }
+        setColor()
+    }
+    
+    
     @IBAction func highPercentEditingChanged(_ sender: Any) {
         if var value: Double = Double(highTierPercentTextField.text!) {
             while value>1 {
@@ -162,7 +298,7 @@ class SoloScoreColor: UIViewController {
         var score = percentFormatted
         score = score * (maxScore-minScore)
         score = score+minScore
-
+        
         return score
     }
     func percentFromSoloScore(soloScore:Double) -> Double{
@@ -174,11 +310,37 @@ class SoloScoreColor: UIViewController {
         }
         score = score-minScore
         let percentScore = score/(maxScore-minScore)
-
+        
         return percentScore
     }
-
+    
     func setColor() {
+        let maxColorVals = hexStringFromUIColor(color: maxTierPointScoreColor)
+        rMaxTierTextField.text = maxColorVals[0]
+        gMaxTierTextField.text = maxColorVals[1]
+        bMaxTierTextField.text = maxColorVals[2]
+        let highColorVals = hexStringFromUIColor(color: highTierPointScoreColor)
+        rHighTierTextField.text = highColorVals[0]
+        gHighTierTextField.text = highColorVals[1]
+        bHighTierTextField.text = highColorVals[2]
+        let midColorVals = hexStringFromUIColor(color: middleTierPointScoreColor)
+        rMidTierTextField.text = midColorVals[0]
+        gMidTierTextField.text = midColorVals[1]
+        bMidTierTextField.text = midColorVals[2]
+        let lowColorVals = hexStringFromUIColor(color: lowTierPointScoreColor)
+        rLowTierTextField.text = lowColorVals[0]
+        gLowTierTextField.text = lowColorVals[1]
+        bLowTierTextField.text = lowColorVals[2]
+        let minColorVals = hexStringFromUIColor(color: minTierPointScoreColor)
+        rMinTierTextField.text = minColorVals[0]
+        gMinTierTextField.text = minColorVals[1]
+        bMinTierTextField.text = minColorVals[2]
+
+        maxPointLabel.backgroundColor = maxTierPointScoreColor
+        highPointLabel.backgroundColor = highTierPointScoreColor
+        midPointLabel.backgroundColor = middleTierPointScoreColor
+        lowPointLabel.backgroundColor = lowTierPointScoreColor
+        minPointLabel.backgroundColor = minTierPointScoreColor
         
         let percentScore = slider.value
         var score = Double(percentScore)
@@ -187,20 +349,20 @@ class SoloScoreColor: UIViewController {
         
         colorView.backgroundColor = colorFromScore(score)
         slider.minimumTrackTintColor = colorView.backgroundColor
-        percentageLabel.text = String(format:"%.2f%", percentScore*100)
+        percentageLabel.text = String(format:"%.2f", percentScore*100) + "%"
     }
     
     func colorFromScore(_ submittedScore: Double) -> UIColor {
-//        return colorForValueWithinRangeWithMidpointOlder(value: submittedScore, min: minScore, max: maxScore)
-
+        //return colorForValueWithinRangeWithMidpointOlder(value: submittedScore, min: minScore, max: maxScore)
         return colorForValueWithinRangeWithMidpoint(value: submittedScore, min: minScore, max: maxScore)
     }
+    
     func colorForValueWithinRangeWithMidpoint(value:Double, min:Double, max:Double) -> UIColor {
-        let goodColor = SoloScoreColor.goodScoreColor.cgColor.components!
-        let badColor = SoloScoreColor.badScoreColor.cgColor.components!
+        let goodColor = maxTierPointScoreColor.cgColor.components!
+        let badColor = minTierPointScoreColor.cgColor.components!
         let middleHighColor = highTierPointScoreColor.cgColor.components!
-        let middleColor = SoloScoreColor.middleTierPointScoreColor.cgColor.components!
-        let middleLowColor = SoloScoreColor.lowTierPointScoreColor.cgColor.components!
+        let middleColor = middleTierPointScoreColor.cgColor.components!
+        let middleLowColor = lowTierPointScoreColor.cgColor.components!
         
         let rGood = Double(goodColor[0]) * 255.0
         let gGood = Double(goodColor[1]) * 255.0
@@ -376,6 +538,23 @@ class SoloScoreColor: UIViewController {
             Int(gValue * 0xff),
             Int(bValue * 0xff)
         )
+    }
+    
+    func hexStringFromUIColor(color:UIColor) -> [String] {
+        let components = color.cgColor.components
+        let r = components![0]
+        let g = components![1]
+        let b = components![2]
+//        r = r*255
+//        g = g/255.0
+//        b = b
+        let hexString = [String(format:"%02X",Int(r * 0xff)), String(format:"%02X",Int(g * 0xff)), String(format:"%02X",Int(b * 0xff))]
+//            format: "%02X %02X %02X",
+//            Int(r * 0xff),
+//            Int(g * 0xff),
+//            Int(b * 0xff)
+//        )
+        return hexString
     }
     
 }
