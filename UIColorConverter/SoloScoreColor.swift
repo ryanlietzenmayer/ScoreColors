@@ -67,13 +67,6 @@ class SoloScoreColor: UIViewController {
     @IBOutlet weak var demoView80: UIView!
     @IBOutlet weak var demoView90: UIView!
     @IBOutlet weak var demoView100: UIView!
-
-    let maxScore = 99.0
-    let minScore = 0.0
-    
-    var highTierPoint = 0.8550
-    var middleTierPoint = 0.8550
-    var lowTierPoint = 0.45
     
     //  Lightning Yellow; #FCBE24, rgb(252,190,36)
     private static let yellowLightning: UIColor = UIColor(rgb:0xFCBE24)
@@ -86,16 +79,32 @@ class SoloScoreColor: UIViewController {
     //  Burnt Orange; #F5873A, rgb(245,135,58)
     private static let orangeBurnt: UIColor = UIColor(rgb:0xF5873A)
     
-    static let goodColor: UIColor = turquoise
-    static let midColor: UIColor = greenFern
-    static let badColor: UIColor = yellowLightning
+    //new colors
+    private static let turquoise1: UIColor = UIColor(rgb:0x1DCEFF)
+    private static let green1: UIColor = UIColor(rgb:0x4AC427)
+    private static let yellow1: UIColor = UIColor(rgb:0xF2B319)
+    private static let orange1: UIColor = UIColor(rgb:0xEA772A)
+    private static let red1: UIColor = UIColor(rgb:0xE24A0E)
+
+    
+//    static let goodColor: UIColor = turquoise
+//    static let midColor: UIColor = greenFern
+//    static let badColor: UIColor = yellowLightning
     
     
-    var maxTierPointScoreColor: UIColor = turquoise
-    var highTierPointScoreColor: UIColor = greenFern
-    var middleTierPointScoreColor: UIColor = greenFern
-    var lowTierPointScoreColor: UIColor = yellowLightning
-    var minTierPointScoreColor: UIColor = orangeBurnt
+    var maxTierPointScoreColor: UIColor = turquoise1
+    var highTierPointScoreColor: UIColor = green1
+    var middleTierPointScoreColor: UIColor = yellow1
+    var lowTierPointScoreColor: UIColor = orange1
+    var minTierPointScoreColor: UIColor = red1
+    
+    let maxScore = 99.0
+    let minScore = 0.0
+    
+    var highTierPoint = 0.80
+    var middleTierPoint = 0.60
+    var lowTierPoint = 0.40
+
     
     override func viewDidLoad() {
         super .viewDidLoad()
@@ -128,8 +137,9 @@ class SoloScoreColor: UIViewController {
     @IBAction func textChangedSoloScore(_ sender: Any) {
         if let value: Double = Double(scoreLabel.text!) {
             
+            scoreLabelPretty.text = String(format:"%.0f", value)
+
             let percentScore = percentFromSoloScore(soloScore: value)
-            
             slider.setValue(Float(percentScore), animated: true) //apparently doesn't trigger sliderValueChanged()
             setColor()
         }
@@ -341,23 +351,23 @@ class SoloScoreColor: UIViewController {
     }
     
     func setColor() {
-        let maxColorVals = hexStringFromUIColor(color: maxTierPointScoreColor)
+        let maxColorVals = SoloScoreColor.hexStringFromUIColor(color: maxTierPointScoreColor)
         rMaxTierTextField.text = maxColorVals[0]
         gMaxTierTextField.text = maxColorVals[1]
         bMaxTierTextField.text = maxColorVals[2]
-        let highColorVals = hexStringFromUIColor(color: highTierPointScoreColor)
+        let highColorVals = SoloScoreColor.hexStringFromUIColor(color: highTierPointScoreColor)
         rHighTierTextField.text = highColorVals[0]
         gHighTierTextField.text = highColorVals[1]
         bHighTierTextField.text = highColorVals[2]
-        let midColorVals = hexStringFromUIColor(color: middleTierPointScoreColor)
+        let midColorVals = SoloScoreColor.hexStringFromUIColor(color: middleTierPointScoreColor)
         rMidTierTextField.text = midColorVals[0]
         gMidTierTextField.text = midColorVals[1]
         bMidTierTextField.text = midColorVals[2]
-        let lowColorVals = hexStringFromUIColor(color: lowTierPointScoreColor)
+        let lowColorVals = SoloScoreColor.hexStringFromUIColor(color: lowTierPointScoreColor)
         rLowTierTextField.text = lowColorVals[0]
         gLowTierTextField.text = lowColorVals[1]
         bLowTierTextField.text = lowColorVals[2]
-        let minColorVals = hexStringFromUIColor(color: minTierPointScoreColor)
+        let minColorVals = SoloScoreColor.hexStringFromUIColor(color: minTierPointScoreColor)
         rMinTierTextField.text = minColorVals[0]
         gMinTierTextField.text = minColorVals[1]
         bMinTierTextField.text = minColorVals[2]
@@ -479,60 +489,60 @@ class SoloScoreColor: UIViewController {
         }
     }
     //as of march 22 2018
-    func colorForValueWithinRangeWithMidpointOlder(value:Double, min:Double, max:Double) -> UIColor {
-        let goodColor = SoloScoreColor.goodColor.cgColor.components!
-        let badColor = SoloScoreColor.badColor.cgColor.components!
-        let middleColor = SoloScoreColor.midColor.cgColor.components!
-        
-        let rGood = Double(goodColor[0]) * 255.0
-        let gGood = Double(goodColor[1]) * 255.0
-        let bGood = Double(goodColor[2]) * 255.0
-        let rBad = Double(badColor[0]) * 255.0
-        let gBad = Double(badColor[1]) * 255.0
-        let bBad = Double(badColor[2]) * 255.0
-        let rMid = Double(middleColor[0]) * 255.0
-        let gMid = Double(middleColor[1]) * 255.0
-        let bMid = Double(middleColor[2]) * 255.0
-        
-        var score = value
-        if score>max {
-            score = max
-        } else if score < min {
-            score = min
-        }
-        
-        let mid = ((max-min) * 0.75) + min
-        
-        if(value>mid){
-            score = score-mid
-            let percentScore = score/(max-mid)
-            
-            let rValue = colorValuePercentage(goodColorComponent: rGood, badColorComponent: rMid, percentScore: percentScore)
-            let gValue = colorValuePercentage(goodColorComponent: gGood, badColorComponent: gMid, percentScore: percentScore)
-            let bValue = colorValuePercentage(goodColorComponent: bGood, badColorComponent: bMid, percentScore: percentScore)
-            
-            let scoreColor: UIColor = UIColor(red: CGFloat(rValue/255.0),
-                                              green: CGFloat(gValue/255.0),
-                                              blue: CGFloat(bValue/255.0), alpha: 1.0)
-            
-            updateTextFromRGB(red: rValue, green: gValue, blue: bValue)
-            return scoreColor
-        } else {
-            score = score-min
-            let percentScore = score/(mid-min)
-            
-            let rValue = colorValuePercentage(goodColorComponent: rMid, badColorComponent: rBad, percentScore: percentScore)
-            let gValue = colorValuePercentage(goodColorComponent: gMid, badColorComponent: gBad, percentScore: percentScore)
-            let bValue = colorValuePercentage(goodColorComponent: bMid, badColorComponent: bBad, percentScore: percentScore)
-            
-            let scoreColor: UIColor = UIColor(red: CGFloat(rValue/255.0),
-                                              green: CGFloat(gValue/255.0),
-                                              blue: CGFloat(bValue/255.0), alpha: 1.0)
-            
-            updateTextFromRGB(red: rValue, green: gValue, blue: bValue)
-            return scoreColor
-        }
-    }
+//    func colorForValueWithinRangeWithMidpointOlder(value:Double, min:Double, max:Double) -> UIColor {
+//        let goodColor = SoloScoreColor.goodColor.cgColor.components!
+//        let badColor = SoloScoreColor.badColor.cgColor.components!
+//        let middleColor = SoloScoreColor.midColor.cgColor.components!
+//
+//        let rGood = Double(goodColor[0]) * 255.0
+//        let gGood = Double(goodColor[1]) * 255.0
+//        let bGood = Double(goodColor[2]) * 255.0
+//        let rBad = Double(badColor[0]) * 255.0
+//        let gBad = Double(badColor[1]) * 255.0
+//        let bBad = Double(badColor[2]) * 255.0
+//        let rMid = Double(middleColor[0]) * 255.0
+//        let gMid = Double(middleColor[1]) * 255.0
+//        let bMid = Double(middleColor[2]) * 255.0
+//
+//        var score = value
+//        if score>max {
+//            score = max
+//        } else if score < min {
+//            score = min
+//        }
+//
+//        let mid = ((max-min) * 0.75) + min
+//
+//        if(value>mid){
+//            score = score-mid
+//            let percentScore = score/(max-mid)
+//
+//            let rValue = colorValuePercentage(goodColorComponent: rGood, badColorComponent: rMid, percentScore: percentScore)
+//            let gValue = colorValuePercentage(goodColorComponent: gGood, badColorComponent: gMid, percentScore: percentScore)
+//            let bValue = colorValuePercentage(goodColorComponent: bGood, badColorComponent: bMid, percentScore: percentScore)
+//
+//            let scoreColor: UIColor = UIColor(red: CGFloat(rValue/255.0),
+//                                              green: CGFloat(gValue/255.0),
+//                                              blue: CGFloat(bValue/255.0), alpha: 1.0)
+//
+//            updateTextFromRGB(red: rValue, green: gValue, blue: bValue)
+//            return scoreColor
+//        } else {
+//            score = score-min
+//            let percentScore = score/(mid-min)
+//
+//            let rValue = colorValuePercentage(goodColorComponent: rMid, badColorComponent: rBad, percentScore: percentScore)
+//            let gValue = colorValuePercentage(goodColorComponent: gMid, badColorComponent: gBad, percentScore: percentScore)
+//            let bValue = colorValuePercentage(goodColorComponent: bMid, badColorComponent: bBad, percentScore: percentScore)
+//
+//            let scoreColor: UIColor = UIColor(red: CGFloat(rValue/255.0),
+//                                              green: CGFloat(gValue/255.0),
+//                                              blue: CGFloat(bValue/255.0), alpha: 1.0)
+//
+//            updateTextFromRGB(red: rValue, green: gValue, blue: bValue)
+//            return scoreColor
+//        }
+//    }
     func colorValuePercentage(goodColorComponent: Double, badColorComponent: Double, percentScore: Double) -> Double{
         if goodColorComponent < badColorComponent {
             let inversePercentScore = (percentScore-1) * -1
@@ -546,7 +556,6 @@ class SoloScoreColor: UIViewController {
             value = value + badColorComponent
             return value
         }
-        
     }
     
     func updateTextFromRGB(red:Double, green:Double, blue:Double){
@@ -554,9 +563,9 @@ class SoloScoreColor: UIViewController {
         var gValue = green
         var bValue = blue
         
-        redLabel.text = String(format:"%.4f", rValue)
-        greenLabel.text = String(format:"%.4f", gValue)
-        blueLabel.text = String(format:"%.4f", bValue)
+        redLabel.text = String(format:"%.0f", rValue)
+        greenLabel.text = String(format:"%.0f", gValue)
+        blueLabel.text = String(format:"%.0f", bValue)
         rValue = rValue/255.0
         gValue = gValue/255.0
         bValue = bValue/255.0
@@ -568,7 +577,7 @@ class SoloScoreColor: UIViewController {
         )
     }
     
-    func hexStringFromUIColor(color:UIColor) -> [String] {
+    static func hexStringFromUIColor(color:UIColor) -> [String] {
         let components = color.cgColor.components
         let r = components![0]
         let g = components![1]
